@@ -331,7 +331,7 @@ end # function save
 #----------
 function retrieve(s::ConfParse, key::ASCIIString)
     if !haskey(s._data, key)
-      return nothing
+      return ""
     end
     if (length(s._data[key]) == 1)
         return s._data[key][1]
