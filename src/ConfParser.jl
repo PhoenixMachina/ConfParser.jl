@@ -285,7 +285,7 @@ function erase!(s::ConfParse, block::ASCIIString, key::ASCIIString)
             delete!(s._data[block_key], key)
         end
     end
-    
+
     s._is_modified = true
 end # function erase!
 
@@ -296,7 +296,7 @@ function erase!(s::ConfParse, key::ASCIIString)
     if (haskey(s._data, key))
         delete!(s._data, key)
     end
-   
+
     s._is_modified = true
 end # function erase!
 
@@ -322,7 +322,7 @@ function save!(s::ConfParse, filename::Any = nothing)
     else
         s._fh = open_fh(filename, "w")
     end
-    
+
     write(s._fh, content)
 end # function save
 
@@ -330,6 +330,9 @@ end # function save
 # for retrieving data outside of a block
 #----------
 function retrieve(s::ConfParse, key::ASCIIString)
+    if !haskey(s._data, key)
+      return nothing
+    end
     if (length(s._data[key]) == 1)
         return s._data[key][1]
     end
@@ -351,7 +354,7 @@ end # function retrieve
 #----------
 # for retrieving data outside of a block and converting to type
 #----------
-function retrieve(s::ConfParse, key::ASCIIString, t::Type) 
+function retrieve(s::ConfParse, key::ASCIIString, t::Type)
     if (length(s._data[key]) == 1)
         return parse(t, s._data[key][1])
     end
@@ -362,7 +365,7 @@ end # function retrieve
 #----------
 # for retrieving data from an ini config file block and converting to type
 #----------
-function retrieve(s::ConfParse, block::ASCIIString, key::ASCIIString, t::Type) 
+function retrieve(s::ConfParse, block::ASCIIString, key::ASCIIString, t::Type)
     if (length(s._data[block][key]) == 1)
         return parse(t, s._data[block][key][1])
     end
